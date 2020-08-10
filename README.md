@@ -1,6 +1,6 @@
-# rnaeaa
+# Word QUIZ
 
-A new Flutter application.
+A new Flutter application., Python backend 
 
 ## Getting Started
 

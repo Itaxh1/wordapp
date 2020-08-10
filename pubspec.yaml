@@ -20,13 +20,14 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
-  flutter_countdown_timer: ^1.0.0
+  timer_count_down: ^1.0.4+1
 
   #google_fonts: ^0.7.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
 
 # For information on the generic Dart part of this file, see the

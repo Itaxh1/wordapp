@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_countdown_timer/countdown_timer.dart';
+import 'package:timer_count_down/timer_controller.dart';
+import 'package:timer_count_down/timer_count_down.dart';
+
 
 //import 'package:google_fonts/google_fonts.dart';
 
@@ -13,11 +15,19 @@ class Main_game extends StatefulWidget {
   _Main_gameState createState() => _Main_gameState();
 }
 int score =0;
+
 class _Main_gameState extends State<Main_game> {
+
+
+  final CountdownController controller = CountdownController();
+  bool _isPause = true;
+  bool _isRestart = false;
   @override
-
-
   Widget build(BuildContext context) {
+    final IconData buttonIcon = _isRestart
+        ? Icons.refresh
+        : (_isPause ? Icons.pause : Icons.play_arrow );
+
     String $score='0';
     String $timestamped='0';
     List<String> list = ["A", "B", "C", "D","E","F"];
@@ -44,22 +54,62 @@ class _Main_gameState extends State<Main_game> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    SizedBox(width: 200,),
+                      SizedBox(width: 40,),
                     FlatButton(
-                      padding: EdgeInsets.all(10.0),
+
                       onPressed: null,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text("Time: "+$timestamped, style: TextStyle(
-                            color: Colors.white
-                          ),),
-                          Icon(Icons.alarm)
+                          Center(
+                            child: Countdown(
+                              controller: controller,
+                              seconds: 300,
+                              build: (_, double time) => Text(
+                                time.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              interval: Duration(milliseconds: 100),
+                              onFinished: () {
+                                print('Timer is done!');
+
+                                setState(() {
+                                  _isRestart = true;
+                                });
+                              },
+                            ),
+                          ),
+                          FloatingActionButton(
+                            child: Icon(buttonIcon, size: 20),
+                            onPressed: () {
+                              final isCompleted = controller.isCompleted;
+                              isCompleted ? controller.restart() : controller.pause();
+
+                              if (!isCompleted && !_isPause) {
+                                controller.resume();
+                              }
+
+                              if (isCompleted) {
+                                setState(() {
+                                  _isRestart = false;
+                                });
+                              } else {
+                                setState(() {
+                                  _isPause = !_isPause;
+                                });
+                              }
+                            },
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
+
 
 
               Center(
